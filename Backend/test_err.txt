@@ -1,0 +1,5 @@
+[
+  "[14:28:42] Target language: Urdu | Model: gemini-2.5-flash | Thinking: OFF",
+  "[14:28:50] Calling Gemini\u2026",
+  "[14:28:51] Done. Received 88 characters."
+]

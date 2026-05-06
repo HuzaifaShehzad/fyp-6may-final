@@ -1,0 +1,21 @@
+
+C:\Users\hp\Desktop\fyp\New folder\fyp-prototype>venv\Scripts\activate
+
+(venv) C:\Users\hp\Desktop\fyp\New folder\fyp-prototype>streamlit run app.py
+Usage: streamlit run [OPTIONS] [TARGET] [ARGS]...
+Try 'streamlit run --help' for help.
+
+Error: Invalid value: File does not exist: app.py
+
+(venv) C:\Users\hp\Desktop\fyp\New folder\fyp-prototype>streamlit run streamlit_app.py
+
+  You can now view your Streamlit app in your browser.
+
+  Local URL: http://localhost:8501
+  Network URL: http://192.168.100.17:8501
+
+uvicorn api:app --reload
+
+ollama run qwen2.5:1.5b 
+console testing
+

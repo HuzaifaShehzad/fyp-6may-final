@@ -1,0 +1,363 @@
+/* =============================================
+   GLOBAL APP STYLES
+   ============================================= */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ─── CSS Reset & Base ───────────────────────── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* Primary Palette — Agricultural Greens */
+  --green-50: #e8f5e9;
+  --green-100: #c8e6c9;
+  --green-200: #a5d6a7;
+  --green-300: #81c784;
+  --green-400: #66bb6a;
+  --green-500: #4caf50;
+  --green-600: #43a047;
+  --green-700: #388e3c;
+  --green-800: #2e7d32;
+  --green-900: #1b5e20;
+
+  /* Dark Background Tones */
+  --bg-primary: #060e06;
+  --bg-secondary: #0a1f0a;
+  --bg-tertiary: #0d2818;
+  --bg-card: rgba(46, 125, 50, 0.08);
+
+  /* Border Colors */
+  --border-subtle: rgba(76, 175, 80, 0.12);
+  --border-default: rgba(76, 175, 80, 0.2);
+  --border-hover: rgba(76, 175, 80, 0.4);
+
+  /* Text Colors */
+  --text-primary: #e8f5e9;
+  --text-secondary: rgba(200, 230, 201, 0.8);
+  --text-muted: rgba(165, 214, 167, 0.5);
+
+  /* Spacing */
+  --sidebar-width: 280px;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  overflow: hidden;
+  height: 100vh;
+}
+
+#root {
+  height: 100vh;
+}
+
+/* ─── App Layout ─────────────────────────────── */
+.app {
+  display: flex;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Background Decorations ─────────────────── */
+.app__bg-decoration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.app__bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.07;
+}
+
+.app__bg-circle--1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #2e7d32, transparent);
+  top: -200px;
+  right: -100px;
+  animation: bgFloat1 20s ease-in-out infinite;
+}
+
+.app__bg-circle--2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #1b5e20, transparent);
+  bottom: -150px;
+  left: -100px;
+  animation: bgFloat2 25s ease-in-out infinite;
+}
+
+.app__bg-circle--3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #4caf50, transparent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: bgFloat3 18s ease-in-out infinite;
+}
+
+@keyframes bgFloat1 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-30px, 40px); }
+}
+
+@keyframes bgFloat2 {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(40px, -30px); }
+}
+
+@keyframes bgFloat3 {
+  0%, 100% { transform: translate(-50%, -50%); }
+  50% { transform: translate(-45%, -55%); }
+}
+
+/* ─── Main Content Area ──────────────────────── */
+.app__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ─── Chat Area ──────────────────────────────── */
+.app__chat-area {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(76, 175, 80, 0.2) transparent;
+}
+
+.app__chat-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.app__chat-area::-webkit-scrollbar-thumb {
+  background: rgba(76, 175, 80, 0.2);
+  border-radius: 6px;
+}
+
+.app__chat-area::-webkit-scrollbar-thumb:hover {
+  background: rgba(76, 175, 80, 0.35);
+}
+
+/* ─── Messages Container ─────────────────────── */
+.app__messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  gap: 4px;
+}
+
+/* =============================================
+   WEATHER WIDGET
+   ============================================= */
+.weather {
+  padding: 10px 24px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weather__row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.weather__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border-default);
+  background: rgba(46, 125, 50, 0.12);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+  user-select: none;
+}
+
+.weather__btn:hover {
+  background: rgba(46, 125, 50, 0.18);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.weather__btn:active {
+  transform: translateY(0px) scale(0.99);
+}
+
+.weather__btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.weather__btn-text {
+  letter-spacing: 0.2px;
+}
+
+/* Pulsing dot like "Cloud Synced" */
+.weather__btn-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green-500);
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+.weather__error {
+  display: inline-block;
+  width: fit-content;
+  max-width: 560px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 152, 0, 0.35);
+  background: rgba(255, 152, 0, 0.10);
+  color: #ffb4b4;
+  font-size: 12px;
+}
+
+.weather__card {
+  width: fit-content;
+  max-width: 560px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  animation: weatherPop 220ms ease-out;
+}
+
+.weather__city {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.weather__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 14px;
+}
+
+.weather__item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.weather__item--full {
+  grid-column: 1 / -1;
+}
+
+.weather__label {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.weather__value {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@keyframes weatherPop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0px); }
+}
+
+/* ─── Selection Color ────────────────────────── */
+::selection {
+  background: rgba(76, 175, 80, 0.3);
+  color: #e8f5e9;
+}
+
+/* ─── Focus Visible ──────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--green-500);
+  outline-offset: 2px;
+}
+
+/* =============================================
+   RESPONSIVE
+   ============================================= */
+@media (max-width: 768px) {
+  .app {
+    height: 100vh;
+    height: 100dvh; /* Accounts for mobile browser chrome */
+  }
+
+  .app__main {
+    /* Ensure the main area fills available space properly */
+    min-height: 0;
+  }
+
+  .app__chat-area {
+    /* Ensure proper scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .app__messages {
+    padding: 12px 10px;
+    gap: 2px;
+  }
+
+  .weather {
+    padding: 10px 10px 10px;
+  }
+
+  /* Hide background decorations on mobile for performance */
+  .app__bg-circle {
+    display: none;
+  }
+}
+
+/* ─── Very Small Screens (< 380px) ──────────── */
+@media (max-width: 380px) {
+  .app__messages {
+    padding: 8px 6px;
+  }
+}
+
+/* ─── Safe Area Insets (notch devices) ───────── */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .app__main {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+

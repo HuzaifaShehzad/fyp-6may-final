@@ -1,0 +1,11 @@
+openai-whisper
+sounddevice
+soundfile
+numpy
+google-genai
+streamlit
+gtts
+pydub
+edge-tts
+python-dotenv
+

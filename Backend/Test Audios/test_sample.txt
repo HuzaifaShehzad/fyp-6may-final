@@ -1,0 +1,24 @@
+--Urdu text that has been translated in Punjabi & Sindhi audio for AI Agent testing purposes--
+
+1. Meri zameen namki (saline) ho rahi hai, main usay kaise theek kar sakta hoon?
+2. Cotton ki fasal par whitefly ka hamla ho gaya hai, kaun si dawai behtar rahegi?
+3. Dhaan ke liye kitna pani zaruri hota hai aur irrigation ka best tareeqa kya hai?
+
+PUNJABI:
+
+میری زمین نمکین ہو رہی ہے، میں ایس نوں کِویں ٹھیک کر سکدا واں؟ 1
+2. کپاہ دی فصل تے چِٹی مَکھی دا حملہ ہو گیا اے، کیہڑی دوائی ودھیا رہے گی؟ 
+3. جھونے لئی کِنّا پاݨی ضروری ہوندا اے تے پاݨی لاوݨ دا سبھ توں ودھیا طریقہ کیہ اے؟
+
+
+SINDHI:
+----------------------------------------------
+1. مُونجي زمين لُوني (نمکِيڻ) ٿي رهي آهي، آءٌ اُن کي ڪيئن ٺِڪ ڪري سگهان ٿو؟
+2. ڪاٽن جي فصل تي اَڇِي مَکِ جو حملو ٿي ويو آهي، ڪهڙي دوائِي بهتر رهندي؟
+3. چاور لاءِ ڪيرو پاڻي ضروري آهي، ۽ آبپاشي جو بهترين طريقو ڇا آهي؟
+
+
+
+1. Munhngi zameen looni (namkeen) thi rahi aahe, aaoon an khe kayin theek kare saghan tho?
+2. Kapah ji fasal te achi makh jo hamlo thi wiyo aahe, k1ri dawaa behtar rahandi?
+3. Chaanur laay keetro paani zaroori aahe, ain aabpaashi jo behtareen tareeqo chha aahe?

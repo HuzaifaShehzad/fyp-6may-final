@@ -1,0 +1,27 @@
+# Ignore environment variables
+.env
+.env.*
+Backend/.env
+Front-end/.env
+
+# Ignore python cache
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environments
+venv/
+env/
+.venv/
+
+# Ignore frontend build files
+node_modules/
+dist/
+
+# Ignore temporary audio files
+*.wav
+*.webm
+*.mp3
+audio/
+Backend/audio/
+Backend/temp_*.wav
+Backend/temp_*.webm
