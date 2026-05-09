@@ -23,8 +23,16 @@ except Exception:
 # Supports legacy env var name `GEMINI_API` (some .env files use it).
 GEMINI_API_KEY: str = (os.getenv("GEMINI_API_KEY") or os.getenv("GEMINI_API") or "").strip()
 
-# Default model for generation
-GEMINI_MODEL_NAME: str = os.getenv("GEMINI_MODEL_NAME", "gemini-2.0-flash")
+# Primary model (free tier often separates “Flash”, “Flash-Lite”, and version families).
+GEMINI_MODEL_NAME: str = os.getenv("GEMINI_MODEL_NAME", "gemini-2.5-flash-lite")
+
+# Comma-separated fallbacks tried in order after the primary.
+# Omit or reorder if a model hits 429 on your project (see Google AI rate limits dashboard).
+_fallback_raw = os.getenv(
+    "GEMINI_FALLBACK_MODELS",
+    "gemini-3.1-flash-lite,gemini-flash-lite-latest,gemma-4-31b-it,gemini-2.5-flash,gemini-2.0-flash",
+).strip()
+GEMINI_FALLBACK_MODELS: list[str] = [p.strip() for p in _fallback_raw.split(",") if p.strip()]
 
 # Target language for translation (logical language name, not locale code)
 # Set to "urdu" for Urdu-focused translation with Urdu script (Nastaliq/Perso-Arabic) output

@@ -26,6 +26,19 @@ def _normalize_target_lang(target_lang: str) -> str:
     return mapping.get(lang, target_lang)
 
 
+def _gemini_model_sequence(primary: str) -> list[str]:
+    """Deduped ordered list: primary first, then config fallbacks (no duplicate names)."""
+    fallbacks = getattr(config, "GEMINI_FALLBACK_MODELS", []) or []
+    ordered: list[str] = []
+    seen: set[str] = set()
+    for m in [primary.strip()] + list(fallbacks):
+        if not m or m in seen:
+            continue
+        seen.add(m)
+        ordered.append(m)
+    return ordered
+
+
 def _sanitize_translated_text(text: str) -> str:
     """Remove invalid surrogate characters."""
     if not text:
@@ -186,7 +199,7 @@ def translate_text(
         return ""
 
     target_lang_readable = _normalize_target_lang(target_lang)
-    model_name = getattr(config, "GEMINI_MODEL_NAME", "gemini-2.0-flash")
+    model_name = getattr(config, "GEMINI_MODEL_NAME", "gemini-2.5-flash-lite")
 
     # === PROFESSIONAL AGRICULTURAL EXPERT SYSTEM PROMPT ===
     target_lang_lower = target_lang_readable.lower()
@@ -263,15 +276,11 @@ def translate_text(
             top_p=0.9,
         )
 
-        # Try primary model, then fallback on 503/overload
-        models_to_try = [model_name]
-        fallback = "gemini-2.0-flash"
-        if model_name != fallback:
-            models_to_try.append(fallback)
+        models_to_try = _gemini_model_sequence(model_name)
 
         last_error = None
         for attempt_model in models_to_try:
-            for attempt in range(2):  # retry once per model
+            for attempt in range(2):  # retry once per model (overload only)
                 try:
                     _log(f"Calling {attempt_model} (attempt {attempt + 1})…")
                     resp = client.models.generate_content(model=attempt_model, contents=text, config=cfg)
@@ -286,8 +295,11 @@ def translate_text(
                 except Exception as e:
                     last_error = e
                     err_str = str(e).lower()
-                    is_retryable = any(k in err_str for k in ["503", "unavailable", "overloaded", "high demand", "429", "resource_exhausted"])
                     _log(f"{attempt_model} attempt {attempt + 1} failed: {e}")
+                    # Quota / RPD exhausted: try next model immediately (don't double-hit same model).
+                    if any(k in err_str for k in ["429", "resource_exhausted", "quota", "rate limit"]):
+                        break
+                    is_retryable = any(k in err_str for k in ["503", "unavailable", "overloaded", "high demand"])
                     if is_retryable and attempt == 0:
                         wait_secs = 2
                         _log(f"Retryable error. Waiting {wait_secs}s before retry…")
@@ -367,7 +379,7 @@ def normalize_transcript_for_display(text: str, target_lang: str) -> str:
         return text
 
     target_lang_readable = _normalize_target_lang(target_lang)
-    model_name = getattr(config, "GEMINI_MODEL_NAME", "gemini-2.5-flash")
+    model_name = getattr(config, "GEMINI_MODEL_NAME", "gemini-2.5-flash-lite")
 
     system_prompt = (
         f"You are a transliteration engine. Your task is to accurately convert the user's spoken {target_lang_readable} text "
@@ -389,10 +401,7 @@ def normalize_transcript_for_display(text: str, target_lang: str) -> str:
             system_instruction=system_prompt,
             temperature=0.1, # Low temp for transliteration
         )
-        models_to_try = [model_name]
-        fallback = "gemini-2.0-flash"
-        if model_name != fallback:
-            models_to_try.append(fallback)
+        models_to_try = _gemini_model_sequence(model_name)
 
         for attempt_model in models_to_try:
             try:
@@ -422,7 +431,7 @@ def transliterate_regional_for_tts(text: str, target_lang: str) -> str:
         return text
 
     target_lang_readable = _normalize_target_lang(target_lang)
-    model_name = getattr(config, "GEMINI_MODEL_NAME", "gemini-2.5-flash")
+    model_name = getattr(config, "GEMINI_MODEL_NAME", "gemini-2.5-flash-lite")
     system_prompt = (
         f"You are a phonetic transliteration engine. The user will provide text in {target_lang_readable} language (Arabic script). "
         "Your task is to rewrite the text using ONLY standard Urdu letters so that an Urdu Text-to-Speech (TTS) "
@@ -442,10 +451,7 @@ def transliterate_regional_for_tts(text: str, target_lang: str) -> str:
             system_instruction=system_prompt,
             temperature=0.1,
         )
-        models_to_try = [model_name]
-        fallback = "gemini-2.0-flash"
-        if model_name != fallback:
-            models_to_try.append(fallback)
+        models_to_try = _gemini_model_sequence(model_name)
 
         for attempt_model in models_to_try:
             try:
